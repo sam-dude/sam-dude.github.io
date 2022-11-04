@@ -1,4 +1,6 @@
 # Tipsier
 A tipping app 
-THis Is Tipsier a tipping app. written with Vanilla js and CSS. 
-It was fun.
+This Is Tipsier a tipping Web app. written with Vanilla js and CSS. 
+
+Aimed at getting your days smoother.
+Made with Love 🧡
