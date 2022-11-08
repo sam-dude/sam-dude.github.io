@@ -1,0 +1,178 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: "Roboto";
+    background-color: rgb(44, 43, 41);
+}
+.box {
+    margin: 2rem auto;
+    width: 500px;
+    padding: 32px 12px;
+    padding-bottom: 64px;
+    background-color: #fcfbfd;
+    border-radius: 5px;
+}
+
+.box h3 {
+    text-align: center;
+    margin-bottom: 0.7rem;
+    font-size: 32px;
+}
+form h5 {
+    padding: 12px 0;
+    font-size: 18px;
+    text-align: center;
+}
+form input[type="number"] {
+    width: 90%;
+    font-size: 16px;
+    margin: none;
+    padding: 2px 5px;
+}
+form input[type="range"] {
+    width: 80%;
+
+}
+.price-tag {
+    padding-left: 0px;
+    font-weight: 700;
+    font-size: 36px;
+}
+.s-price-tag {
+    font-size: 24px;
+}
+.bill-port {
+    display: flex;
+    justify-content: center;
+}
+
+.form input[type="number"] {
+    padding: 10px 24px;
+    background: #fcfbff;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 24px;
+    width: 250px;
+    border-radius: 50px;
+    color: #00a037;
+    overflow: hidden;
+    box-shadow: 5px 5px 5px -1px rgba(10, 90, 169, 0.16), -5px -5px 10px -1px rgba(255, 255, 255, 0.70);
+}
+.form input[type="number"]:focus {
+    outline: none;
+}
+.form-1 button {
+    padding: 10px 10px;
+    background: #fcfbff;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 24px;
+    border-radius: 50px;
+    color: #00a037;
+    box-shadow: 5px 5px 5px -1px rgba(10, 90, 169, 0.16), -5px -5px 10px -1px rgba(255, 255, 255, 0.70);
+    margin-left: 12px;
+    transition: 0.5s;
+}
+.form-1 button:hover {
+    box-shadow: 3px 3px 3px -1px rgba(10, 90, 169, 0.16), -3px -3px 5px -1px rgba(255, 255, 255, 0.70);;
+}
+.form-1 button.active {
+    box-shadow: none;
+    background-color: #00a037;
+    color: #fcfbff;
+}
+#E-bill {
+    display: flex;
+}
+#c-bill {
+    display: flex;
+    justify-content: center;
+    max-width: 400px;
+}
+#result {
+    background: #b3ffce;
+    margin: 12px auto;
+    padding-bottom: 24px;
+    max-width: 400px;
+    border-radius: 10px;
+    color: #00a037;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+@media (max-width: 400px) {
+    #result {
+        max-width: 320px;
+    }
+}
+
+#split-01 {
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+}
+#split-01 div[type="button"],
+#split-01 div#spilt-display {
+    outline: none; 
+    border: 0;
+    font-size: 36px;
+    color: #888;
+    border-radius: 50%;
+    cursor: pointer;
+    outline: none;
+}
+#split-01 div#spilt-display {
+    color: #00a037;
+    font-weight: 500;
+}
+
+/* navbar */
+#nav-bg {
+    display: inline-block;
+    position: absolute;
+    width: 100%;
+    padding-bottom: 100%;
+    vertical-align: middle;
+    height: 150px;
+    overflow: hidden;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+svg {
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    height: 600px;
+    width: 100%;
+    
+}
+@media (min-width:600px) {
+    svg {
+        display: none;
+    }
+    #nav-bg {
+        display: none;
+    }
+}
+
+.navbar img{
+    width: 150px;
+}
+#reset-btn {
+    background-color: #00a037;
+    color: #fcfbfd;
+    font-weight: 500;
+    width: fit-content;
+    border-radius: 15px;
+    cursor: pointer;
+}
+#reset-btn:hover {
+    background-color: green;
+}

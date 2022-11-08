@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./Style.css">
+    <link rel="stylesheet" href="./assets/bootstrap-5.2.1-dist/css/bootstrap.min.css">
+    <title>Tipsier - About</title>
+</head>
+<body>
+    <!-- navbar -->
+    <nav class="navbar navbar-expand-md" id="navbar">
+        <div class="container-fluid">
+          <a class="navbar-brand text-center m-auto ms-2" href="#"><img src="./assets/Images/Tipsier.png" alt="Tipsier"></a>
+          <a class="navs nav-link d-inline d-md-none me-2" id="reset-btn" href="./index.html" style="padding: 8px 8px;">The App</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+            <div class="offcanvas-header">
+              <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Tip Calculator</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+              <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                <li class=" nav-item ms-2">
+                    <a href="#about" class="navs nav-link px-3 ">About</a>
+                </li>
+                <li class="nav-item ms-2">
+                    <a href="#features" class="navs nav-link px-3 ">Features</a>
+                </li>
+                <li class="nav-item ms-2">
+                    <a href="#." class="navs nav-link px-3 ">How to use</a>
+                </li>
+                <li class="nav-item ms-2">
+                    <a class="navs nav-link px-3 d-none d-md-block" id="reset-btn" href="./index.html">Get started</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <div class="container about-body mt-3" id="about">
+          <h3 class="display-1 text-bold">About</h3>
+          <h3 class="text-muted">A quick Overview</h3>
+          <p><span style="color: #00a037; font-weight: 500;" class="text-bold">Tipsier</span> - This app was made to make life easier. This web_app  contains concontion of Hypertext Markup Language and of course English ;).</p>
+      </div>
+
+      <!-- footer -->
+    <footer class="m-auto text-center mt-4 pb-3 bg-light pt-3 fixed-bottom">
+        <p>Made with 💚 by <b>Oluwagbotemi</b></p>
+    </footer>
+        <script src="./assets/bootstrap-5.2.1-dist/js/bootstrap.min.js"></script>
+</body>
+</html>

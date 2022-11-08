@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- link -->
+    <link rel="stylesheet" href="./Style.css">
+    <link rel="stylesheet" href="./assets/bootstrap-5.2.1-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
+    <title>Discount Calculator - Tipsier</title>
+</head>
+<body>
+
+    <!-- navbar -->
+    <nav class="navbar navbar-expand-md" id="navbar">
+        <div class="container-fluid">
+          <a class="navbar-brand text-center m-auto ms-2" href="#"><img src="./assets/Images/Tipsier.png" alt="Tipsier"></a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+            <div class="offcanvas-header">
+              <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Tip Calculator</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+              <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                <li class=" nav-item ms-2">
+                    <a href="./about.html" class="navs nav-link px-3 ">About</a>
+                </li>
+                <li class="nav-item ms-2">
+                    <a href="#features" class="navs nav-link px-3 ">Features</a>
+                </li>
+                <li class="nav-item ms-2">
+                    <a href="#." class="navs nav-link px-3 ">How to use</a>
+                </li>
+                <li class="nav-item ms-2">
+                    <a class="navs nav-link px-3" id="reset-btn" data-bs-dismiss="offcanvas" aria-label="Close">Reset</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <!-- nav background -->
+      <div id="nav-bg">
+
+        <!-- creating a svg image -->
+        <svg viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet">
+            <path d="M0, 100 C150, 200 350, 0 500, 100 L500, 00 L0, 0 Z" style="stroke: none; fill: #b3ffce;"> 
+
+            </path>
+        </svg>
+      </div>
+    <!-- calculator space01 -->
+    <section id="tip-space">
+        <div class="container">
+            <div id="E-bill" class="justify-content-center m-auto text-center">
+                <div class="col-12  mt-3 mx-auto">
+                    <form action="" class="form">
+                        <label for="bill-total" class="fs-5  text-muted col-10">Enter bill total ($)</label>
+                        <div class="input-group mb-2" >
+                            <input type="number" name="price"  placeholder="00.00" step="0.01" class=" m-auto my-3" id="price" px-3 oninput="ChangePrice(this.value)">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div id="c-bill" class="container  mx-auto">
+            <div class="col-12 mt-2">
+                <form action="" class="form-1">
+                    <label for="choose tip" class="fs-5 text-muted col-10 mb-1">Choose tip:</label>
+                    <div class="row justify-content-center m-auto ">
+                        <button class="col-3 " id="btn-10" type="button">10%</button>
+                        <button class="col-3 " id="btn-15" type="button">15%</button>
+                        <button class="col-3 active" id="btn-20" type="button">20%</button>
+                    </div>
+                    <div class="row justify-content-center m-auto mt-3">
+                        <button class="col-3 " id="btn-25" type="button">25%</button>
+                        <button class="col-6 " id="btn-custom" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Custom tip</button>
+                        
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- split -->
+    <div id="c-bill" class="container  mx-auto">
+        <div class="col-12 mt-1 mb-1">
+            <form action="" class="form-1">
+                <label for="choose tip" class="fs-5 text-muted col-10 mb-1 mt-1">Split</label>
+                <div class="m-auto text-center" id="split-01">
+                    <div type="button" id="minus">-</div>
+                    <div id="spilt-display" onchange="splitBill(this.innerHTML)">0</div>
+                    <div  type="button" id="plus">+</div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+    
+
+    <!-- result space -->
+    <section id="result">
+        <div class="container my-4 justify-content-center">
+            <div class="col-12 text-center">
+                <label for="result" class="fs-4 text-muted mb-2 pt-3">Total per person</label>
+                <div class="price-tag" >$<span id="total-bill" >00.00</span></div>
+            </div>
+            <div class="col-12 my-3 text-center">
+                <div class="row justify-content-center bill-port">
+                    <div class="col-5">
+                        <label for="s-bill" class="fs-5 text-muted mb-1 pt-3 ">bill</label>
+                        <div class="s-price-tag">$<span id="s-total-bill">00.00</span></div>
+                    </div>
+                    <div class="col-5">
+                        <label for="s-tip" class="fs-5 text-muted mb-1 pt-3">tip</label>
+                        <div class="s-price-tag">$<span id="tip-amount" >00.00</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="staticBackdropLabel">Choose a Custom tip</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <label for="tip">Tip</label>
+                    <input type="range" name="tip" id="tip" min="0" value="0" max="100" step="1" style="color: green;" oninput="DisplayChange(this.value)" >
+                    <span id="tip-percent" >0%</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+              
+              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Select</button>
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <!-- footer -->
+    <footer class="m-auto text-center mt-4 pb-3 bg-light pt-3">
+        <p>Made with 💚 by <b>Oluwagbotemi</b></p>
+    </footer>
+
+
+
+ 
+
+    <script src="./sandBox.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="./assets/bootstrap-5.2.1-dist/js/bootstrap.min.js"></script>
+</body>
+</html>
