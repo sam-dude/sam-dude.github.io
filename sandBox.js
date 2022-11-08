@@ -158,15 +158,21 @@ button.forEach((btn) => {
         }; if (btn == minus) {
             let newDisplay = parseFloat(displaySplit.innerHTML) - 1;
             displaySplit.innerHTML = newDisplay;
-            if (displaySplit.innerHTML <= 1){
-                displaySplit.innerHTML = 1;
+            if (displaySplit.innerHTML < 1){
+                displaySplit.innerHTML = 0;
             }
-            let splitTipResult = Math.ceil(100* (parseFloat(tipAmount.innerHTML) * (parseFloat(displaySplit.innerHTML) + 1)))/100;
-            tipAmount.innerHTML = splitTipResult;
-            let splitBillResult = splitBill(price.value, displaySplit.innerHTML);
-            console.log(splitBillResult);
-            bill.innerHTML = splitBillResult;
-            totalBill.innerHTML = Math.ceil(100 * parseFloat(tipAmount.innerHTML) + parseFloat(bill.innerHTML))/100 ;
+            if (displaySplit.innerHTML > 0) {
+                let splitTipResult = Math.ceil(100 * (parseFloat(tipAmount.innerHTML) * (parseFloat(displaySplit.innerHTML) + 1)))/100;
+                tipAmount.innerHTML = splitTipResult;
+                let splitBillResult = splitBill(price.value, displaySplit.innerHTML);
+                console.log(splitBillResult);
+                bill.innerHTML = splitBillResult;
+                let totalBillOut = parseFloat(tipAmount.innerHTML) + Math.ceil(100 * parseFloat(bill.innerHTML))/100 ;
+                console.log(totalBillOut);
+                totalBill.innerHTML = totalBillOut;
+            }
+            
+            
         };        
         console.log(displaySplit.innerHTML);
         
