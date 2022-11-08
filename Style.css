@@ -98,12 +98,17 @@ form input[type="range"] {
     background: #b3ffce;
     margin: 12px auto;
     padding-bottom: 24px;
-    max-width: 400px;
+    max-width: 280px;
     border-radius: 10px;
     color: #00a037;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
-@media (max-width: 400px) {
+@media (min-width: 600px) {
+    #result {
+        max-width: 600px;
+    }
+}
+@media (min-width: 350px) {
     #result {
         max-width: 320px;
     }
