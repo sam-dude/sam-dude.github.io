@@ -33,7 +33,7 @@ const {
   updatedDate,
   tags = [],
   status = 'seedling',
-  category = '01-Reflections',
+  category = 'My Days at Robotics Lab',
   currentSlug,
   headings = [],
   type = 'article'
@@ -72,17 +72,17 @@ const backlinks = currentSlug ? allPosts
     <!-- Top Obsidian Header -->
     <Header currentSlug={currentSlug} />
 
-    <!-- 3-Column Obsidian Workspace -->
+    <!-- Clean Obsidian Workspace (Sidebars collapsed by default) -->
     <div class="obsidian-workspace">
-      <!-- Left: Vault File Explorer -->
+      <!-- Left: Vault File Explorer (Drawer) -->
       <SidebarLeft posts={allPosts} currentSlug={currentSlug} />
 
-      <!-- Center: Main Reading Area -->
+      <!-- Center: Main Reading Area (Clean, Centered, Spacious) -->
       <main class="reading-pane">
         <slot />
       </main>
 
-      <!-- Right: Outline & Backlinks (for articles with headings) -->
+      <!-- Right: Outline & Backlinks (Drawer) -->
       <SidebarRight headings={headings} backlinks={backlinks} />
     </div>
 
@@ -156,7 +156,6 @@ const backlinks = currentSlug ? allPosts
             const title = match[2]?.trim() || TITLES[type] || 'Note';
             const iconSvg = ICONS[type] || ICONS.note;
 
-            // Remove marker from paragraph
             const remaining = text.replace(/^\[!([a-zA-Z0-9_-]+)\][-+]?(?:\s+.*)?\n?/, '').trim();
             if (remaining) {
               firstP.textContent = remaining;
@@ -164,7 +163,6 @@ const backlinks = currentSlug ? allPosts
               firstP.remove();
             }
 
-            // Create Obsidian Callout wrapper
             const callout = document.createElement('div');
             callout.className = `obsidian-callout callout-${type}`;
             callout.setAttribute('data-callout', type);
@@ -215,6 +213,7 @@ const backlinks = currentSlug ? allPosts
 <style>
   .obsidian-workspace {
     display: flex;
+    justify-content: center;
     min-height: calc(100vh - var(--header-height));
     width: 100%;
     position: relative;
@@ -222,17 +221,18 @@ const backlinks = currentSlug ? allPosts
 
   .reading-pane {
     flex: 1;
-    min-width: 0;
-    padding: 2.5rem 3rem 5rem 3rem;
+    max-width: 860px;
+    width: 100%;
+    padding: 3rem 2rem 6rem 2rem;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
   }
 
-  @media (max-width: 1024px) {
+  @media (max-width: 768px) {
     .reading-pane {
-      padding: 1.5rem 1.5rem 4rem 1.5rem;
+      padding: 1.5rem 1.25rem 4rem 1.25rem;
     }
   }
 </style>

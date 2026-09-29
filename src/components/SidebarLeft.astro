@@ -9,12 +9,7 @@ export interface Props {
 const { posts = [], currentSlug = '' } = Astro.props;
 
 // Group posts by category / folder
-const categories = Array.from(new Set(posts.map(p => p.data.category || '01-Reflections'))).sort();
-
-// Collect all unique tags
-const allTags = Array.from(
-  new Set(posts.flatMap(p => p.data.tags || []))
-).sort();
+const categories = Array.from(new Set(posts.map(p => p.data.category || 'My Days at Robotics Lab'))).sort();
 
 const statusIcons = {
   seedling: '🌱',
@@ -28,8 +23,11 @@ const statusIcons = {
   <div class="vault-header">
     <div class="vault-info">
       <span class="vault-label">VAULT EXPLORER</span>
-      <span class="vault-count">{posts.length} notes</span>
+      <span class="vault-count">{posts.length} note{posts.length > 1 ? 's' : ''}</span>
     </div>
+    <button id="close-left-sidebar" class="close-sidebar-btn" title="Close Explorer">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
   </div>
 
   <div class="vault-search-box">
@@ -38,10 +36,8 @@ const statusIcons = {
   </div>
 
   <nav class="vault-nav">
-    <div class="nav-section-title">FOLDERS & FILES</div>
-
     {categories.map(category => {
-      const categoryPosts = posts.filter(p => (p.data.category || '01-Reflections') === category);
+      const categoryPosts = posts.filter(p => (p.data.category || 'My Days at Robotics Lab') === category);
       return (
         <details class="folder-group" open>
           <summary class="folder-title">
@@ -49,7 +45,7 @@ const statusIcons = {
               <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
             </span>
             <span class="folder-icon">📁</span>
-            <span class="folder-name">{category.replace(/^\d+-/, '').replace(/-/g, ' ')}</span>
+            <span class="folder-name">{category}</span>
             <span class="folder-badge">{categoryPosts.length}</span>
           </summary>
 
@@ -72,24 +68,14 @@ const statusIcons = {
         </details>
       );
     })}
-
-    <!-- Tags Section -->
-    <div class="nav-section-title" style="margin-top: 1.5rem;">TAGS</div>
-    <div class="tag-cloud">
-      {allTags.map(tag => (
-        <a href={`/tags/${tag}`} class="tag-pill">
-          #{tag}
-        </a>
-      ))}
-    </div>
   </nav>
 
   <div class="vault-footer">
     <div class="author-card">
-      <div class="author-avatar">RE</div>
+      <div class="author-avatar">RL</div>
       <div class="author-details">
-        <span class="author-name">Reflective Engineer</span>
-        <span class="author-role">Tech Journal & Field Notes</span>
+        <span class="author-name">Robotics Lab Notes</span>
+        <span class="author-role">Personal Engineering Journal</span>
       </div>
     </div>
   </div>
@@ -101,13 +87,21 @@ const statusIcons = {
     background: var(--bg-sidebar);
     border-right: 1px solid var(--border-subtle);
     height: calc(100vh - var(--header-height));
-    position: sticky;
+    position: fixed;
+    left: 0;
     top: var(--header-height);
+    bottom: 0;
+    z-index: 150;
     display: flex;
     flex-direction: column;
     overflow-y: auto;
-    flex-shrink: 0;
+    transform: translateX(-100%); /* Collapsed by default */
     transition: transform var(--transition-normal);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .vault-sidebar.open {
+    transform: translateX(0); /* Opened on toggle */
   }
 
   .vault-header {
@@ -115,6 +109,30 @@ const statusIcons = {
     display: flex;
     justify-content: space-between;
     align-items: center;
+  }
+
+  .vault-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .close-sidebar-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-faint);
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color var(--transition-fast);
+  }
+
+  .close-sidebar-btn:hover {
+    color: var(--text-heading);
+    background: var(--bg-surface-hover);
   }
 
   .vault-label {
@@ -160,14 +178,6 @@ const statusIcons = {
     padding: 0 0.5rem 1rem 0.5rem;
   }
 
-  .nav-section-title {
-    font-size: 0.68rem;
-    font-weight: 700;
-    color: var(--text-faint);
-    letter-spacing: 0.06em;
-    padding: 0.4rem 0.5rem;
-  }
-
   .folder-group {
     margin-bottom: 0.25rem;
   }
@@ -209,7 +219,7 @@ const statusIcons = {
 
   .folder-name {
     flex: 1;
-    text-transform: capitalize;
+    font-size: 0.88rem;
   }
 
   .folder-badge {
@@ -227,13 +237,14 @@ const statusIcons = {
     display: flex;
     align-items: center;
     gap: 0.45rem;
-    padding: 0.35rem 0.5rem;
+    padding: 0.4rem 0.6rem;
     border-radius: var(--radius-sm);
     color: var(--text-muted);
     font-size: 0.84rem;
     text-decoration: none;
     transition: all var(--transition-fast);
     line-height: 1.35;
+    border-left: none; /* Clean: NO BORDER-LEFT */
   }
 
   .file-link:hover {
@@ -246,7 +257,7 @@ const statusIcons = {
     background: var(--bg-surface-active);
     color: var(--text-accent);
     font-weight: 600;
-    border-left: 2px solid var(--accent-primary);
+    border-left: none; /* Clean: NO BORDER-LEFT */
   }
 
   .status-indicator {
@@ -258,30 +269,6 @@ const statusIcons = {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-  }
-
-  .tag-cloud {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.35rem;
-    padding: 0.4rem 0.5rem;
-  }
-
-  .tag-pill {
-    font-size: 0.76rem;
-    padding: 0.2rem 0.45rem;
-    background: var(--tag-bg);
-    color: var(--tag-text);
-    border: 1px solid var(--tag-border);
-    border-radius: var(--radius-sm);
-    text-decoration: none;
-    transition: all var(--transition-fast);
-  }
-
-  .tag-pill:hover {
-    background: var(--accent-primary);
-    color: #ffffff;
-    text-decoration: none;
   }
 
   .vault-footer {
@@ -297,15 +284,15 @@ const statusIcons = {
   }
 
   .author-avatar {
-    width: 32px;
-    height: 32px;
+    width: 30px;
+    height: 30px;
     background: linear-gradient(135deg, #7c3aed, #4f46e5);
     color: #ffffff;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     font-weight: 700;
   }
 
@@ -315,7 +302,7 @@ const statusIcons = {
   }
 
   .author-name {
-    font-size: 0.84rem;
+    font-size: 0.82rem;
     font-weight: 600;
     color: var(--text-heading);
   }
@@ -324,43 +311,9 @@ const statusIcons = {
     font-size: 0.7rem;
     color: var(--text-faint);
   }
-
-  @media (max-width: 900px) {
-    .vault-sidebar {
-      position: fixed;
-      left: 0;
-      top: var(--header-height);
-      bottom: 0;
-      z-index: 90;
-      transform: translateX(-100%);
-      box-shadow: var(--shadow-lg);
-    }
-
-    .vault-sidebar.open {
-      transform: translateX(0);
-    }
-  }
 </style>
 
 <script is:inline>
-  // Mobile drawer toggle
-  const mobileToggle = document.getElementById('mobile-menu-toggle');
-  const sidebar = document.getElementById('vault-sidebar');
-
-  if (mobileToggle && sidebar) {
-    mobileToggle.addEventListener('click', () => {
-      sidebar.classList.toggle('open');
-    });
-
-    document.addEventListener('click', (e) => {
-      if (window.innerWidth <= 900 && sidebar.classList.contains('open')) {
-        if (!sidebar.contains(e.target) && !mobileToggle.contains(e.target)) {
-          sidebar.classList.remove('open');
-        }
-      }
-    });
-  }
-
   // Vault file filtering
   const filterInput = document.getElementById('vault-filter-input');
   if (filterInput) {
@@ -374,6 +327,15 @@ const statusIcons = {
           item.style.display = 'none';
         }
       });
+    });
+  }
+
+  // Close button inside sidebar
+  const closeBtn = document.getElementById('close-left-sidebar');
+  const sidebar = document.getElementById('vault-sidebar');
+  if (closeBtn && sidebar) {
+    closeBtn.addEventListener('click', () => {
+      sidebar.classList.remove('open');
     });
   }
 </script>

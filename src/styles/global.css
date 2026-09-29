@@ -24,16 +24,15 @@
 
 :root {
   /* Color Palette - Obsidian Slate Dark (Default) */
-  --bg-app: #16161a;
-  --bg-sidebar: #121215;
-  --bg-surface: #1e1e24;
-  --bg-surface-hover: #26262f;
-  --bg-surface-active: #2f2f3b;
-  --bg-code: #0f0f13;
-  --bg-callout: rgba(255, 255, 255, 0.03);
+  --bg-app: #141417;
+  --bg-sidebar: #101013;
+  --bg-surface: #1b1b20;
+  --bg-surface-hover: #23232a;
+  --bg-surface-active: #2b2b34;
+  --bg-code: #0c0c0f;
 
-  --border-subtle: #292934;
-  --border-medium: #3b3b4a;
+  --border-subtle: #24242e;
+  --border-medium: #353542;
   --border-active: #7c3aed;
 
   --text-main: #e2e8f0;
@@ -60,9 +59,9 @@
   --font-reading: var(--font-excalifont);
 
   /* Dimensions */
-  --sidebar-left-width: 290px;
+  --sidebar-left-width: 280px;
   --sidebar-right-width: 270px;
-  --header-height: 56px;
+  --header-height: 54px;
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 14px;
@@ -86,7 +85,6 @@
   --bg-surface-hover: #ecece6;
   --bg-surface-active: #e2e2da;
   --bg-code: #f1f1eb;
-  --bg-callout: rgba(0, 0, 0, 0.02);
 
   --border-subtle: #e5e5dc;
   --border-medium: #d4d4c8;
@@ -173,42 +171,25 @@ a:hover {
   text-decoration: underline;
 }
 
-/* Excalidraw-like organic underline / hand-drawn touch */
-.excali-underline {
-  position: relative;
-  display: inline-block;
-}
-.excali-underline::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: -2px;
-  width: 100%;
-  height: 2px;
-  background: currentColor;
-  opacity: 0.6;
-  border-radius: 4px;
-}
-
 /* Code Typography */
 code, kbd, samp, pre {
   font-family: var(--font-mono);
   font-size: 0.9em;
 }
 
-/* Obsidian Callouts Styling */
+/* Clean Quotes & Callouts - No Border-Left */
 .obsidian-callout {
   margin: 1.6rem 0;
-  padding: 1rem 1.25rem;
+  padding: 1.1rem 1.35rem;
   border-radius: var(--radius-md);
-  border-left: 4px solid var(--accent-primary);
-  background: var(--bg-callout);
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-surface);
   box-shadow: var(--shadow-sm);
-  transition: transform var(--transition-fast), border-color var(--transition-fast);
+  transition: border-color var(--transition-fast);
 }
 
 .obsidian-callout:hover {
-  transform: translateY(-1px);
+  border-color: var(--border-medium);
 }
 
 .callout-header {
@@ -216,8 +197,8 @@ code, kbd, samp, pre {
   align-items: center;
   gap: 0.65rem;
   font-weight: 700;
-  font-size: 1.05rem;
-  margin-bottom: 0.5rem;
+  font-size: 1.02rem;
+  margin-bottom: 0.45rem;
   font-family: var(--font-app);
   letter-spacing: 0.02em;
 }
@@ -242,77 +223,75 @@ code, kbd, samp, pre {
   margin: 0.4rem 0;
 }
 
-/* Specific Callout Variants */
+/* Subtle Tinting for Callouts (No Border-Left) */
 .callout-note {
-  border-left-color: #3b82f6;
-  background: rgba(59, 130, 246, 0.08);
+  border-color: rgba(59, 130, 246, 0.25);
+  background: rgba(59, 130, 246, 0.04);
 }
 .callout-note .callout-header { color: #60a5fa; }
 
 .callout-tip {
-  border-left-color: #10b981;
-  background: rgba(16, 185, 129, 0.08);
+  border-color: rgba(16, 185, 129, 0.25);
+  background: rgba(16, 185, 129, 0.04);
 }
 .callout-tip .callout-header { color: #34d399; }
 
 .callout-info {
-  border-left-color: #06b6d4;
-  background: rgba(6, 182, 212, 0.08);
+  border-color: rgba(6, 182, 212, 0.25);
+  background: rgba(6, 182, 212, 0.04);
 }
 .callout-info .callout-header { color: #22d3ee; }
 
 .callout-warning {
-  border-left-color: #f59e0b;
-  background: rgba(245, 158, 11, 0.08);
+  border-color: rgba(245, 158, 11, 0.25);
+  background: rgba(245, 158, 11, 0.04);
 }
 .callout-warning .callout-header { color: #fbbf24; }
 
 .callout-danger {
-  border-left-color: #ef4444;
-  background: rgba(239, 68, 68, 0.09);
+  border-color: rgba(239, 68, 68, 0.25);
+  background: rgba(239, 68, 68, 0.04);
 }
 .callout-danger .callout-header { color: #f87171; }
 
 .callout-summary {
-  border-left-color: #14b8a6;
-  background: rgba(20, 184, 166, 0.08);
+  border-color: rgba(20, 184, 166, 0.25);
+  background: rgba(20, 184, 166, 0.04);
 }
 .callout-summary .callout-header { color: #2dd4bf; }
 
 .callout-quote {
-  border-left-color: #a855f7;
-  background: rgba(168, 85, 247, 0.08);
+  border-color: rgba(168, 85, 247, 0.25);
+  background: rgba(168, 85, 247, 0.04);
 }
 .callout-quote .callout-header { color: #c084fc; }
 
 .callout-bug {
-  border-left-color: #e11d48;
-  background: rgba(225, 29, 72, 0.09);
+  border-color: rgba(225, 29, 72, 0.25);
+  background: rgba(225, 29, 72, 0.04);
 }
 .callout-bug .callout-header { color: #fb7185; }
 
 .callout-question {
-  border-left-color: #eab308;
-  background: rgba(234, 179, 8, 0.08);
+  border-color: rgba(234, 179, 8, 0.25);
+  background: rgba(234, 179, 8, 0.04);
 }
 .callout-question .callout-header { color: #facc15; }
 
 /* Internal Wikilinks Styling */
 .internal-link {
   color: var(--text-accent);
-  background: rgba(167, 139, 250, 0.1);
+  background: rgba(167, 139, 250, 0.08);
   padding: 0.1rem 0.35rem;
   border-radius: 4px;
   font-weight: 500;
   text-decoration: none;
-  border-bottom: 1.5px dashed var(--accent-primary);
   transition: all var(--transition-fast);
 }
 
 .internal-link:hover {
-  background: rgba(167, 139, 250, 0.2);
+  background: rgba(167, 139, 250, 0.18);
   text-decoration: none;
-  box-shadow: 0 0 10px var(--accent-glow);
 }
 
 .internal-link-bracket {
@@ -328,7 +307,8 @@ code, kbd, samp, pre {
   font-size: 1.05rem;
   line-height: 1.8;
   color: var(--text-main);
-  max-width: 780px;
+  max-width: 800px;
+  width: 100%;
   margin: 0 auto;
 }
 
@@ -346,20 +326,20 @@ code, kbd, samp, pre {
 }
 
 .markdown-body h1 {
-  font-size: 2.3rem;
+  font-size: 2.2rem;
   margin-top: 1rem;
   border-bottom: 1px solid var(--border-subtle);
-  padding-bottom: 0.6rem;
+  padding-bottom: 0.5rem;
 }
 
 .markdown-body h2 {
-  font-size: 1.65rem;
+  font-size: 1.6rem;
   border-bottom: 1px dashed var(--border-subtle);
   padding-bottom: 0.4rem;
 }
 
 .markdown-body h3 {
-  font-size: 1.35rem;
+  font-size: 1.3rem;
 }
 
 .markdown-body p {
@@ -376,14 +356,15 @@ code, kbd, samp, pre {
   margin-bottom: 0.4rem;
 }
 
+/* Clean Blockquote - NO BORDER-LEFT */
 .markdown-body blockquote:not(.obsidian-callout) {
-  border-left: 3px solid var(--border-medium);
-  padding: 0.5rem 1rem;
+  border: 1px solid var(--border-subtle);
+  padding: 0.9rem 1.25rem;
   margin: 1.5rem 0;
   color: var(--text-muted);
   font-style: italic;
   background: var(--bg-surface);
-  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  border-radius: var(--radius-md);
 }
 
 .markdown-body hr {

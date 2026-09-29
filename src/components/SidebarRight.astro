@@ -22,21 +22,27 @@ const { headings = [], backlinks = [] } = Astro.props;
 const tocHeadings = headings.filter(h => h.depth === 2 || h.depth === 3);
 ---
 
-<aside class="outline-sidebar">
+<aside class="outline-sidebar" id="outline-sidebar">
+  <div class="outline-header">
+    <div class="outline-title-bar">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="8" y1="6" x2="21" y2="6"/>
+        <line x1="8" y1="12" x2="21" y2="12"/>
+        <line x1="8" y1="18" x2="21" y2="18"/>
+        <line x1="3" y1="6" x2="3.01" y2="6"/>
+        <line x1="3" y1="12" x2="3.01" y2="12"/>
+        <line x1="3" y1="18" x2="3.01" y2="18"/>
+      </svg>
+      <span>OUTLINE & CONTROLS</span>
+    </div>
+    <button id="close-right-sidebar" class="close-sidebar-btn" title="Close Outline">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+
   <div class="outline-container">
-    {tocHeadings.length > 0 && (
+    {tocHeadings.length > 0 ? (
       <div class="outline-section">
-        <div class="section-header">
-          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="8" y1="6" x2="21" y2="6"/>
-            <line x1="8" y1="12" x2="21" y2="12"/>
-            <line x1="8" y1="18" x2="21" y2="18"/>
-            <line x1="3" y1="6" x2="3.01" y2="6"/>
-            <line x1="3" y1="12" x2="3.01" y2="12"/>
-            <line x1="3" y1="18" x2="3.01" y2="18"/>
-          </svg>
-          <span>OUTLINE</span>
-        </div>
         <ul class="toc-list">
           {tocHeadings.map(h => (
             <li class:list={['toc-item', `toc-depth-${h.depth}`]}>
@@ -47,19 +53,23 @@ const tocHeadings = headings.filter(h => h.depth === 2 || h.depth === 3);
           ))}
         </ul>
       </div>
+    ) : (
+      <div class="empty-outline">
+        No sub-headings in this note
+      </div>
     )}
 
     <!-- Linked Mentions / Backlinks -->
-    <div class="outline-section" style="margin-top: 1.5rem;">
-      <div class="section-header">
-        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
-          <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
-        </svg>
-        <span>LINKED MENTIONS</span>
-      </div>
+    {backlinks.length > 0 && (
+      <div class="outline-section" style="margin-top: 1.5rem;">
+        <div class="section-label">
+          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+          </svg>
+          <span>LINKED MENTIONS</span>
+        </div>
 
-      {backlinks.length > 0 ? (
         <ul class="backlink-list">
           {backlinks.map(link => (
             <li class="backlink-item">
@@ -70,22 +80,18 @@ const tocHeadings = headings.filter(h => h.depth === 2 || h.depth === 3);
             </li>
           ))}
         </ul>
-      ) : (
-        <div class="empty-backlinks">
-          No backlinks discovered yet
-        </div>
-      )}
-    </div>
+      </div>
+    )}
 
     <!-- Reading Adjuster Tools -->
     <div class="outline-section reading-tools" style="margin-top: 2rem;">
-      <div class="section-header">
-        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <div class="section-label">
+        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="12" cy="12" r="3"/>
           <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42"/>
           <path d="M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
         </svg>
-        <span>READING CONTROLS</span>
+        <span>READING SIZE</span>
       </div>
       <div class="reading-buttons">
         <button id="font-decrease" class="tool-chip" title="Decrease font size">A-</button>
@@ -102,22 +108,68 @@ const tocHeadings = headings.filter(h => h.depth === 2 || h.depth === 3);
     background: var(--bg-sidebar);
     border-left: 1px solid var(--border-subtle);
     height: calc(100vh - var(--header-height));
-    position: sticky;
+    position: fixed;
+    right: 0;
     top: var(--header-height);
+    bottom: 0;
+    z-index: 150;
     overflow-y: auto;
-    flex-shrink: 0;
-    padding: 1.25rem 1rem;
+    padding: 1rem;
+    transform: translateX(100%); /* Collapsed by default */
+    transition: transform var(--transition-normal);
+    box-shadow: var(--shadow-lg);
   }
 
-  .section-header {
+  .outline-sidebar.open {
+    transform: translateX(0); /* Opened on toggle */
+  }
+
+  .outline-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-subtle);
+    margin-bottom: 1rem;
+  }
+
+  .outline-title-bar {
     display: flex;
     align-items: center;
     gap: 0.45rem;
-    font-size: 0.7rem;
+    font-size: 0.72rem;
     font-weight: 700;
     color: var(--text-faint);
     letter-spacing: 0.08em;
-    margin-bottom: 0.75rem;
+  }
+
+  .close-sidebar-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-faint);
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color var(--transition-fast);
+  }
+
+  .close-sidebar-btn:hover {
+    color: var(--text-heading);
+    background: var(--bg-surface-hover);
+  }
+
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--text-faint);
+    letter-spacing: 0.06em;
+    margin-bottom: 0.6rem;
   }
 
   .toc-list {
@@ -137,20 +189,30 @@ const tocHeadings = headings.filter(h => h.depth === 2 || h.depth === 3);
     text-decoration: none;
     line-height: 1.4;
     display: block;
-    border-left: 2px solid transparent;
-    padding-left: 0.45rem;
+    padding: 0.3rem 0.5rem;
+    border-radius: var(--radius-sm);
     transition: all var(--transition-fast);
+    border-left: none; /* Clean: NO BORDER-LEFT */
   }
 
   .toc-link:hover {
     color: var(--text-heading);
+    background: var(--bg-surface-hover);
     text-decoration: none;
   }
 
   .toc-link.active {
     color: var(--text-accent);
-    border-left-color: var(--accent-primary);
+    background: var(--bg-surface-active);
     font-weight: 600;
+    border-left: none; /* Clean: NO BORDER-LEFT */
+  }
+
+  .empty-outline {
+    font-size: 0.8rem;
+    color: var(--text-faint);
+    font-style: italic;
+    padding: 0.5rem 0;
   }
 
   .backlink-list {
@@ -172,7 +234,6 @@ const tocHeadings = headings.filter(h => h.depth === 2 || h.depth === 3);
 
   .backlink-link:hover {
     border-color: var(--border-medium);
-    transform: translateX(2px);
     text-decoration: none;
   }
 
@@ -191,13 +252,6 @@ const tocHeadings = headings.filter(h => h.depth === 2 || h.depth === 3);
     font-size: 0.72rem;
     color: var(--text-faint);
     margin-top: 0.2rem;
-  }
-
-  .empty-backlinks {
-    font-size: 0.78rem;
-    color: var(--text-faint);
-    font-style: italic;
-    padding: 0.4rem 0;
   }
 
   .reading-buttons {
@@ -223,15 +277,18 @@ const tocHeadings = headings.filter(h => h.depth === 2 || h.depth === 3);
     color: var(--text-heading);
     border-color: var(--border-medium);
   }
-
-  @media (max-width: 1200px) {
-    .outline-sidebar {
-      display: none;
-    }
-  }
 </style>
 
 <script is:inline>
+  // Close right sidebar button
+  const closeRightBtn = document.getElementById('close-right-sidebar');
+  const rightSidebar = document.getElementById('outline-sidebar');
+  if (closeRightBtn && rightSidebar) {
+    closeRightBtn.addEventListener('click', () => {
+      rightSidebar.classList.remove('open');
+    });
+  }
+
   // Scrollspy for active outline heading
   (function() {
     const links = document.querySelectorAll('.toc-link');
