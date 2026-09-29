@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://excaliblog.github.io/sitemap-index.xml

@@ -1,0 +1,87 @@
+---
+export interface Props {
+  title?: string;
+  description?: string;
+  pubDate?: Date;
+  updatedDate?: Date;
+  author?: string;
+  type?: 'website' | 'article';
+  image?: string;
+  canonicalUrl?: string;
+  tags?: string[];
+}
+
+const {
+  title = "Tech Reflections | Personal Engineering Field Notes",
+  description = "A reflective personal technical blog exploring system design, software abstractions, distributed systems, and engineering mental models.",
+  pubDate,
+  updatedDate,
+  author = "Reflective Engineer",
+  type = "website",
+  image = "/og-image.png",
+  canonicalUrl = Astro.url.href,
+  tags = []
+} = Astro.props;
+
+const siteTitle = title.includes("Tech Reflections") ? title : `${title} | Tech Reflections`;
+
+// Format social card absolute URL without triggering regex scanner
+const origin = Astro.url.origin;
+const cleanPath = image.startsWith('/') ? image : `/${image}`;
+const socialImageUrl = image.startsWith('http') ? image : `${origin}${cleanPath}`;
+
+// JSON-LD Structured Data for rich SEO
+const schemaData = type === 'article' ? {
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": title,
+  "description": description,
+  "author": {
+    "@type": "Person",
+    "name": author
+  },
+  "datePublished": pubDate ? pubDate.toISOString() : undefined,
+  "dateModified": updatedDate ? updatedDate.toISOString() : pubDate ? pubDate.toISOString() : undefined,
+  "keywords": tags.join(", "),
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": canonicalUrl
+  }
+} : {
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  "name": "Tech Reflections",
+  "description": description,
+  "url": canonicalUrl,
+  "author": {
+    "@type": "Person",
+    "name": author
+  }
+};
+---
+
+<!-- Primary Meta Tags -->
+<title>{siteTitle}</title>
+<meta name="title" content={siteTitle} />
+<meta name="description" content={description} />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="canonical" href={canonicalUrl} />
+<link rel="sitemap" href="/sitemap-index.xml" />
+<link rel="alternate" type="application/rss+xml" title="Tech Reflections RSS Feed" href="/rss.xml" />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content={type} />
+<meta property="og:url" content={canonicalUrl} />
+<meta property="og:title" content={siteTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={socialImageUrl} />
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={canonicalUrl} />
+<meta property="twitter:title" content={siteTitle} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={socialImageUrl} />
+
+<!-- Structured Data -->
+<script type="application/ld+json" set:html={JSON.stringify(schemaData)} />

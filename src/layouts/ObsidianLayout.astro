@@ -1,0 +1,238 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import '../styles/global.css';
+import SEOHead from '../components/SEOHead.astro';
+import Header from '../components/Header.astro';
+import SidebarLeft from '../components/SidebarLeft.astro';
+import SidebarRight from '../components/SidebarRight.astro';
+import QuickSwitcher from '../components/QuickSwitcher.astro';
+
+export interface HeadingItem {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+export interface Props {
+  title?: string;
+  description?: string;
+  pubDate?: Date;
+  updatedDate?: Date;
+  tags?: string[];
+  status?: 'seedling' | 'growing' | 'evergreen' | 'retrospective';
+  category?: string;
+  currentSlug?: string;
+  headings?: HeadingItem[];
+  type?: 'website' | 'article';
+}
+
+const {
+  title,
+  description,
+  pubDate,
+  updatedDate,
+  tags = [],
+  status = 'seedling',
+  category = '01-Reflections',
+  currentSlug,
+  headings = [],
+  type = 'article'
+} = Astro.props;
+
+// Fetch all posts to populate Vault Explorer and Backlinks
+const allPosts = (await getCollection('posts')).sort((a, b) => 
+  b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+// Calculate Backlinks for current post
+const backlinks = currentSlug ? allPosts
+  .filter(p => p.id !== currentSlug && (p.body?.includes(`[[${currentSlug}]]`) || p.body?.includes(`[[${title}]]`)))
+  .map(p => ({
+    id: p.id,
+    title: p.data.title,
+    description: p.data.description
+  })) : [];
+---
+
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-font="excalifont">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <SEOHead 
+      title={title} 
+      description={description} 
+      pubDate={pubDate} 
+      updatedDate={updatedDate} 
+      tags={tags} 
+      type={type} 
+    />
+  </head>
+  <body>
+    <!-- Top Obsidian Header -->
+    <Header currentSlug={currentSlug} />
+
+    <!-- 3-Column Obsidian Workspace -->
+    <div class="obsidian-workspace">
+      <!-- Left: Vault File Explorer -->
+      <SidebarLeft posts={allPosts} currentSlug={currentSlug} />
+
+      <!-- Center: Main Reading Area -->
+      <main class="reading-pane">
+        <slot />
+      </main>
+
+      <!-- Right: Outline & Backlinks (for articles with headings) -->
+      <SidebarRight headings={headings} backlinks={backlinks} />
+    </div>
+
+    <!-- Quick Switcher Modal (Ctrl+K) -->
+    <QuickSwitcher posts={allPosts} />
+
+    <!-- Obsidian Callout & Wikilink DOM Transformer -->
+    <script is:inline>
+      (function() {
+        const ICONS = {
+          note: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+            '<path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>' +
+            '</svg>',
+          tip: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+            '<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>' +
+            '</svg>',
+          info: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+            '<circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>' +
+            '</svg>',
+          warning: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+            '<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>' +
+            '<line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>' +
+            '</svg>',
+          danger: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+            '<polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"/>' +
+            '<line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>' +
+            '</svg>',
+          summary: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+            '<line x1="21" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/>' +
+            '<line x1="21" y1="14" x2="3" y2="14"/><line x1="21" y1="18" x2="7" y2="18"/>' +
+            '</svg>',
+          quote: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+            '<path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"/>' +
+            '<path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"/>' +
+            '</svg>',
+          bug: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+            '<rect width="8" height="14" x="8" y="6" rx="4"/>' +
+            '<path d="m19 7-3 2"/><path d="m5 7 3 2"/><path d="m19 19-3-2"/><path d="m5 19 3-2"/>' +
+            '<path d="M20 13h-4"/><path d="M4 13h4"/><path d="m10 4 1 2"/><path d="m14 4-1 2"/>' +
+            '</svg>',
+          question: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+            '<circle cx="12" cy="12" r="10"/><path d="9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>' +
+            '<line x1="12" y1="17" x2="12.01" y2="17"/>' +
+            '</svg>'
+        };
+
+        const TITLES = {
+          note: 'Note',
+          tip: 'Tip',
+          info: 'Info',
+          warning: 'Warning',
+          danger: 'Danger',
+          summary: 'Summary',
+          quote: 'Quote',
+          bug: 'Bug',
+          question: 'Question'
+        };
+
+        function transformCallouts() {
+          const blockquotes = document.querySelectorAll('.markdown-body blockquote');
+          blockquotes.forEach(bq => {
+            const firstP = bq.querySelector('p');
+            if (!firstP) return;
+
+            const text = firstP.textContent || '';
+            const match = text.match(/^\[!([a-zA-Z0-9_-]+)\][-+]?(?:\s+(.*))?/);
+            if (!match) return;
+
+            const rawType = match[1].toLowerCase();
+            const type = TITLES[rawType] ? rawType : 'note';
+            const title = match[2]?.trim() || TITLES[type] || 'Note';
+            const iconSvg = ICONS[type] || ICONS.note;
+
+            // Remove marker from paragraph
+            const remaining = text.replace(/^\[!([a-zA-Z0-9_-]+)\][-+]?(?:\s+.*)?\n?/, '').trim();
+            if (remaining) {
+              firstP.textContent = remaining;
+            } else {
+              firstP.remove();
+            }
+
+            // Create Obsidian Callout wrapper
+            const callout = document.createElement('div');
+            callout.className = `obsidian-callout callout-${type}`;
+            callout.setAttribute('data-callout', type);
+
+            const header = document.createElement('div');
+            header.className = 'callout-header';
+            header.innerHTML = '<span class="callout-icon">' + iconSvg + '</span><span class="callout-title">' + title + '</span>';
+
+            const content = document.createElement('div');
+            content.className = 'callout-content';
+            while (bq.firstChild) {
+              content.appendChild(bq.firstChild);
+            }
+
+            callout.appendChild(header);
+            callout.appendChild(content);
+            bq.replaceWith(callout);
+          });
+        }
+
+        function transformWikilinks() {
+          const containers = document.querySelectorAll('.markdown-body p, .markdown-body li');
+          containers.forEach(container => {
+            if (container.closest('pre') || container.closest('code')) return;
+            const html = container.innerHTML;
+            if (!html.includes('[[')) return;
+
+            const replaced = html.replace(/\[\[([a-zA-Z0-9-_\s/]+?)(?:\|([^\]]+))?\]\]/g, (m, target, label) => {
+              const cleanTarget = target.trim();
+              const displayLabel = (label || cleanTarget).trim();
+              const slug = cleanTarget.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+              return '<a class="internal-link" href="/posts/' + slug + '" title="Open [[' + cleanTarget + ']]">' +
+                '<span class="internal-link-bracket">[[</span>' + displayLabel + '<span class="internal-link-bracket">]]</span>' +
+                '</a>';
+            });
+
+            container.innerHTML = replaced;
+          });
+        }
+
+        transformCallouts();
+        transformWikilinks();
+      })();
+    </script>
+  </body>
+</html>
+
+<style>
+  .obsidian-workspace {
+    display: flex;
+    min-height: calc(100vh - var(--header-height));
+    width: 100%;
+    position: relative;
+  }
+
+  .reading-pane {
+    flex: 1;
+    min-width: 0;
+    padding: 2.5rem 3rem 5rem 3rem;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  @media (max-width: 1024px) {
+    .reading-pane {
+      padding: 1.5rem 1.5rem 4rem 1.5rem;
+    }
+  }
+</style>

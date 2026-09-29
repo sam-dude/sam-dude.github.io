@@ -1,0 +1,379 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+export interface Props {
+  posts: CollectionEntry<'posts'>[];
+  currentSlug?: string;
+}
+
+const { posts = [], currentSlug = '' } = Astro.props;
+
+// Group posts by category / folder
+const categories = Array.from(new Set(posts.map(p => p.data.category || '01-Reflections'))).sort();
+
+// Collect all unique tags
+const allTags = Array.from(
+  new Set(posts.flatMap(p => p.data.tags || []))
+).sort();
+
+const statusIcons = {
+  seedling: '🌱',
+  growing: '🌿',
+  evergreen: '🌲',
+  retrospective: '📓'
+};
+---
+
+<aside class="vault-sidebar" id="vault-sidebar">
+  <div class="vault-header">
+    <div class="vault-info">
+      <span class="vault-label">VAULT EXPLORER</span>
+      <span class="vault-count">{posts.length} notes</span>
+    </div>
+  </div>
+
+  <div class="vault-search-box">
+    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+    <input type="text" id="vault-filter-input" placeholder="Filter files..." aria-label="Filter notes in vault" />
+  </div>
+
+  <nav class="vault-nav">
+    <div class="nav-section-title">FOLDERS & FILES</div>
+
+    {categories.map(category => {
+      const categoryPosts = posts.filter(p => (p.data.category || '01-Reflections') === category);
+      return (
+        <details class="folder-group" open>
+          <summary class="folder-title">
+            <span class="folder-chevron">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+            </span>
+            <span class="folder-icon">📁</span>
+            <span class="folder-name">{category.replace(/^\d+-/, '').replace(/-/g, ' ')}</span>
+            <span class="folder-badge">{categoryPosts.length}</span>
+          </summary>
+
+          <ul class="file-list">
+            {categoryPosts.map(post => {
+              const isActive = currentSlug === post.id;
+              const status = post.data.status || 'seedling';
+              return (
+                <li class="file-item" data-title={post.data.title.toLowerCase()}>
+                  <a href={`/posts/${post.id}`} class:list={['file-link', { active: isActive }]}>
+                    <span class="status-indicator" title={`Status: ${status}`}>
+                      {statusIcons[status] || '📄'}
+                    </span>
+                    <span class="file-title">{post.data.title}</span>
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+        </details>
+      );
+    })}
+
+    <!-- Tags Section -->
+    <div class="nav-section-title" style="margin-top: 1.5rem;">TAGS</div>
+    <div class="tag-cloud">
+      {allTags.map(tag => (
+        <a href={`/tags/${tag}`} class="tag-pill">
+          #{tag}
+        </a>
+      ))}
+    </div>
+  </nav>
+
+  <div class="vault-footer">
+    <div class="author-card">
+      <div class="author-avatar">RE</div>
+      <div class="author-details">
+        <span class="author-name">Reflective Engineer</span>
+        <span class="author-role">Tech Journal & Field Notes</span>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<style>
+  .vault-sidebar {
+    width: var(--sidebar-left-width);
+    background: var(--bg-sidebar);
+    border-right: 1px solid var(--border-subtle);
+    height: calc(100vh - var(--header-height));
+    position: sticky;
+    top: var(--header-height);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    flex-shrink: 0;
+    transition: transform var(--transition-normal);
+  }
+
+  .vault-header {
+    padding: 0.9rem 1rem 0.5rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .vault-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--text-faint);
+  }
+
+  .vault-count {
+    font-size: 0.72rem;
+    background: var(--bg-surface);
+    color: var(--text-muted);
+    border: 1px solid var(--border-subtle);
+    padding: 0.1rem 0.4rem;
+    border-radius: 10px;
+  }
+
+  .vault-search-box {
+    margin: 0.2rem 0.75rem 0.75rem 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    padding: 0.35rem 0.6rem;
+    color: var(--text-muted);
+  }
+
+  .vault-search-box input {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--text-main);
+    font-size: 0.82rem;
+    width: 100%;
+    font-family: inherit;
+  }
+
+  .vault-nav {
+    flex: 1;
+    padding: 0 0.5rem 1rem 0.5rem;
+  }
+
+  .nav-section-title {
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--text-faint);
+    letter-spacing: 0.06em;
+    padding: 0.4rem 0.5rem;
+  }
+
+  .folder-group {
+    margin-bottom: 0.25rem;
+  }
+
+  .folder-title {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 0.5rem;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    user-select: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-main);
+    list-style: none;
+    transition: background var(--transition-fast);
+  }
+
+  .folder-title::-webkit-details-marker {
+    display: none;
+  }
+
+  .folder-title:hover {
+    background: var(--bg-surface-hover);
+  }
+
+  .folder-chevron svg {
+    transition: transform 0.2s ease;
+  }
+
+  .folder-group[open] > .folder-title .folder-chevron svg {
+    transform: rotate(90deg);
+  }
+
+  .folder-icon {
+    font-size: 0.9rem;
+  }
+
+  .folder-name {
+    flex: 1;
+    text-transform: capitalize;
+  }
+
+  .folder-badge {
+    font-size: 0.7rem;
+    color: var(--text-faint);
+  }
+
+  .file-list {
+    list-style: none;
+    padding-left: 1.1rem;
+    margin: 0.15rem 0 0.4rem 0;
+  }
+
+  .file-link {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.35rem 0.5rem;
+    border-radius: var(--radius-sm);
+    color: var(--text-muted);
+    font-size: 0.84rem;
+    text-decoration: none;
+    transition: all var(--transition-fast);
+    line-height: 1.35;
+  }
+
+  .file-link:hover {
+    background: var(--bg-surface-hover);
+    color: var(--text-heading);
+    text-decoration: none;
+  }
+
+  .file-link.active {
+    background: var(--bg-surface-active);
+    color: var(--text-accent);
+    font-weight: 600;
+    border-left: 2px solid var(--accent-primary);
+  }
+
+  .status-indicator {
+    font-size: 0.85rem;
+    line-height: 1;
+  }
+
+  .file-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .tag-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    padding: 0.4rem 0.5rem;
+  }
+
+  .tag-pill {
+    font-size: 0.76rem;
+    padding: 0.2rem 0.45rem;
+    background: var(--tag-bg);
+    color: var(--tag-text);
+    border: 1px solid var(--tag-border);
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+  }
+
+  .tag-pill:hover {
+    background: var(--accent-primary);
+    color: #ffffff;
+    text-decoration: none;
+  }
+
+  .vault-footer {
+    padding: 0.75rem 1rem;
+    border-top: 1px solid var(--border-subtle);
+    background: var(--bg-sidebar);
+  }
+
+  .author-card {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+  }
+
+  .author-avatar {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, #7c3aed, #4f46e5);
+    color: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
+  .author-details {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .author-name {
+    font-size: 0.84rem;
+    font-weight: 600;
+    color: var(--text-heading);
+  }
+
+  .author-role {
+    font-size: 0.7rem;
+    color: var(--text-faint);
+  }
+
+  @media (max-width: 900px) {
+    .vault-sidebar {
+      position: fixed;
+      left: 0;
+      top: var(--header-height);
+      bottom: 0;
+      z-index: 90;
+      transform: translateX(-100%);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .vault-sidebar.open {
+      transform: translateX(0);
+    }
+  }
+</style>
+
+<script is:inline>
+  // Mobile drawer toggle
+  const mobileToggle = document.getElementById('mobile-menu-toggle');
+  const sidebar = document.getElementById('vault-sidebar');
+
+  if (mobileToggle && sidebar) {
+    mobileToggle.addEventListener('click', () => {
+      sidebar.classList.toggle('open');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (window.innerWidth <= 900 && sidebar.classList.contains('open')) {
+        if (!sidebar.contains(e.target) && !mobileToggle.contains(e.target)) {
+          sidebar.classList.remove('open');
+        }
+      }
+    });
+  }
+
+  // Vault file filtering
+  const filterInput = document.getElementById('vault-filter-input');
+  if (filterInput) {
+    filterInput.addEventListener('input', (e) => {
+      const q = e.target.value.toLowerCase().trim();
+      document.querySelectorAll('.file-item').forEach(item => {
+        const title = item.getAttribute('data-title') || '';
+        if (!q || title.includes(q)) {
+          item.style.display = '';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    });
+  }
+</script>
