@@ -10,16 +10,19 @@ const roboticsPosts = posts.filter(p => (p.data.category || 'My Days at Robotics
 ---
 
 <ObsidianLayout 
-  title="Tech Reflections | Personal Engineering Journal" 
-  description="Personal reflective technical reports on robotics, systems, and engineering field notes."
+  title="Sam-Dude's Vault | Robotics. Explained by a Linguistics" 
+  description="Hi, I am Samuel. I studied English and I am a Robotics Engineer. My focus lies in Robotics Intelligence. I am currently researching Interpretable Robotics Intelligence."
   type="website"
 >
   <div class="garden-index">
-    <!-- Clean Minimalist Welcome Section -->
+    <!-- Samuel's Personal Intro -->
     <header class="garden-header">
-      <h1 class="garden-title">Personal Reflections on Tech</h1>
-      <p class="garden-subtitle">
-        Reflective technical reports, hardware logs, and engineering notes.
+      <h1 class="garden-title">Robotics. Explained by a Linguistics</h1>
+      <p class="garden-bio">
+        Hi, I am Samuel. I studied English and I am Robotics Engineer. My focus lies in Robotics Intelligence. I am currently researching Interpretable Robotics Intelligence.
+      </p>
+      <p class="garden-motto">
+        My flow has rather been interesting.
       </p>
     </header>
 
@@ -66,22 +69,32 @@ const roboticsPosts = posts.filter(p => (p.data.category || 'My Days at Robotics
   .garden-header {
     margin-bottom: 3.5rem;
     padding-bottom: 2rem;
-    border-bottom: 1px solid var(--border-subtle);
+    /* Clean: No bottom line unless explicit */
+    border-bottom: none;
   }
 
   .garden-title {
     font-size: 2.5rem;
     font-weight: 800;
-    color: var(--text-heading);
+    color: var(--color-heading);
     line-height: 1.25;
-    margin-bottom: 0.6rem;
+    margin-bottom: 1.2rem;
     letter-spacing: -0.02em;
+    border-bottom: none !important;
   }
 
-  .garden-subtitle {
+  .garden-bio {
+    font-size: 1.2rem;
+    line-height: 1.75;
+    color: var(--text-main);
+    margin-bottom: 1rem;
+  }
+
+  .garden-motto {
     font-size: 1.15rem;
     line-height: 1.7;
     color: var(--text-muted);
+    font-style: italic;
   }
 
   .folder-section {
@@ -104,9 +117,10 @@ const roboticsPosts = posts.filter(p => (p.data.category || 'My Days at Robotics
 
   .folder-title {
     font-size: 1.35rem;
-    color: var(--text-heading);
+    color: var(--color-heading);
     font-weight: 700;
     margin: 0;
+    border-bottom: none !important;
   }
 
   .reports-list {
@@ -146,15 +160,16 @@ const roboticsPosts = posts.filter(p => (p.data.category || 'My Days at Robotics
   }
 
   .entry-title {
-    font-size: 1.28rem;
+    font-size: 1.3rem;
     font-weight: 700;
-    color: var(--text-heading);
+    color: var(--color-heading);
     margin: 0;
-    transition: color var(--transition-fast);
+    transition: opacity var(--transition-fast);
+    border-bottom: none !important;
   }
 
   .report-link:hover .entry-title {
-    color: var(--text-accent);
+    opacity: 0.85;
   }
 
   .entry-date {

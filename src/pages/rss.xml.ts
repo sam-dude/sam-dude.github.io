@@ -6,8 +6,8 @@ export async function GET(context: { site: URL }) {
   const sortedPosts = posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
   return rss({
-    title: 'Tech Reflections | Personal Engineering Field Notes',
-    description: 'Reflective technical reports on systems architecture, premature abstractions, and distributed state.',
+    title: "Sam-Dude's Vault | Robotics & Tech Journal",
+    description: "Reflective engineering reports, robotics field notes, and technical reflections by Samuel.",
     site: context.site || 'https://excaliblog.github.io',
     items: sortedPosts.map(post => ({
       title: post.data.title,

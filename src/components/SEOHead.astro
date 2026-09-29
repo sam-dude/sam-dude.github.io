@@ -12,18 +12,18 @@ export interface Props {
 }
 
 const {
-  title = "Tech Reflections | Personal Engineering Field Notes",
-  description = "A reflective personal technical blog exploring system design, software abstractions, distributed systems, and engineering mental models.",
+  title = "Sam-Dude's Vault | Robotics & Tech Journal",
+  description = "Reflective engineering reports, robotics field notes, and technical reflections by Samuel.",
   pubDate,
   updatedDate,
-  author = "Reflective Engineer",
+  author = "Samuel",
   type = "website",
   image = "/og-image.png",
   canonicalUrl = Astro.url.href,
   tags = []
 } = Astro.props;
 
-const siteTitle = title.includes("Tech Reflections") ? title : `${title} | Tech Reflections`;
+const siteTitle = title.includes("Sam-Dude's Vault") ? title : `${title} | Sam-Dude's Vault`;
 
 // Format social card absolute URL without triggering regex scanner
 const origin = Astro.url.origin;
@@ -50,7 +50,7 @@ const schemaData = type === 'article' ? {
 } : {
   "@context": "https://schema.org",
   "@type": "Blog",
-  "name": "Tech Reflections",
+  "name": "Sam-Dude's Vault",
   "description": description,
   "url": canonicalUrl,
   "author": {
@@ -67,7 +67,7 @@ const schemaData = type === 'article' ? {
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="canonical" href={canonicalUrl} />
 <link rel="sitemap" href="/sitemap-index.xml" />
-<link rel="alternate" type="application/rss+xml" title="Tech Reflections RSS Feed" href="/rss.xml" />
+<link rel="alternate" type="application/rss+xml" title="Sam-Dude's Vault RSS Feed" href="/rss.xml" />
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content={type} />
