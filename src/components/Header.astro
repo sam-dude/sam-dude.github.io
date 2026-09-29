@@ -7,7 +7,7 @@ export interface Props {
 <header class="obsidian-header">
   <div class="header-left">
     <!-- Vault Explorer Toggle Button -->
-    <button id="toggle-vault-btn" class="toolbar-btn" aria-label="Toggle Vault Explorer" title="Toggle Files Explorer">
+    <button id="toggle-vault-btn" class="toolbar-btn" type="button" aria-label="Toggle Vault Explorer" title="Toggle Files Explorer">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/>
       </svg>
@@ -27,7 +27,7 @@ export interface Props {
   </div>
 
   <div class="header-center">
-    <button id="search-trigger" class="quick-switcher-btn" title="Quick Switcher (Ctrl+K)">
+    <button id="search-trigger" class="quick-switcher-btn" type="button" title="Quick Switcher (Ctrl+K)">
       <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
       <span class="search-placeholder">Quick Switcher...</span>
       <kbd class="shortcut-badge">⌘K</kbd>
@@ -37,7 +37,7 @@ export interface Props {
   <div class="header-right">
     <!-- Font Selector -->
     <div class="font-switcher-dropdown">
-      <button id="font-menu-btn" class="toolbar-btn" title="Change typography">
+      <button id="font-menu-btn" class="toolbar-btn" type="button" title="Change typography">
         <span class="font-icon">✏️</span>
         <span class="font-label" id="active-font-name">Excalifont</span>
         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
@@ -45,28 +45,28 @@ export interface Props {
 
       <div class="dropdown-menu" id="font-dropdown-menu">
         <div class="dropdown-header">Application Typography</div>
-        <button class="dropdown-item" data-font-choice="excalifont">
+        <button class="dropdown-item" type="button" data-font-choice="excalifont">
           <span class="item-icon">✏️</span>
           <div class="item-info">
             <span class="item-name" style="font-family: var(--font-excalifont);">Excalifont (Default)</span>
             <span class="item-desc">Organic hand-drawn Excalidraw aesthetic</span>
           </div>
         </button>
-        <button class="dropdown-item" data-font-choice="sans">
+        <button class="dropdown-item" type="button" data-font-choice="sans">
           <span class="item-icon">👓</span>
           <div class="item-info">
             <span class="item-name" style="font-family: var(--font-sans);">Inter Sans</span>
             <span class="item-desc">Clean, modern technical sans-serif</span>
           </div>
         </button>
-        <button class="dropdown-item" data-font-choice="serif">
+        <button class="dropdown-item" type="button" data-font-choice="serif">
           <span class="item-icon">📖</span>
           <div class="item-info">
             <span class="item-name" style="font-family: var(--font-serif);">Newsreader</span>
             <span class="item-desc">Editorial long-form reading typography</span>
           </div>
         </button>
-        <button class="dropdown-item" data-font-choice="mono">
+        <button class="dropdown-item" type="button" data-font-choice="mono">
           <span class="item-icon">💻</span>
           <div class="item-info">
             <span class="item-name" style="font-family: var(--font-mono);">JetBrains Mono</span>
@@ -77,13 +77,13 @@ export interface Props {
     </div>
 
     <!-- Theme Toggle -->
-    <button id="theme-toggle" class="icon-button" aria-label="Toggle Dark/Light Mode" title="Toggle Theme">
+    <button id="theme-toggle" class="icon-button" type="button" aria-label="Toggle Dark/Light Mode" title="Toggle Theme">
       <svg id="theme-icon-dark" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
       <svg id="theme-icon-light" class="hidden" xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
     </button>
 
     <!-- Outline Toggle Button -->
-    <button id="toggle-outline-btn" class="toolbar-btn" aria-label="Toggle Outline" title="Toggle Outline & TOC">
+    <button id="toggle-outline-btn" class="toolbar-btn" type="button" aria-label="Toggle Outline" title="Toggle Outline & TOC">
       <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <line x1="8" y1="6" x2="21" y2="6"/>
         <line x1="8" y1="12" x2="21" y2="12"/>
@@ -390,23 +390,6 @@ export interface Props {
         mono: 'JetBrains Mono'
       };
       label.textContent = names[font] || 'Excalifont';
-    }
-
-    // Sidebar Toggles (Collapsed by default)
-    const toggleVaultBtn = document.getElementById('toggle-vault-btn');
-    const vaultSidebar = document.getElementById('vault-sidebar');
-    if (toggleVaultBtn && vaultSidebar) {
-      toggleVaultBtn.addEventListener('click', () => {
-        vaultSidebar.classList.toggle('open');
-      });
-    }
-
-    const toggleOutlineBtn = document.getElementById('toggle-outline-btn');
-    const outlineSidebar = document.getElementById('outline-sidebar');
-    if (toggleOutlineBtn && outlineSidebar) {
-      toggleOutlineBtn.addEventListener('click', () => {
-        outlineSidebar.classList.toggle('open');
-      });
     }
   })();
 </script>

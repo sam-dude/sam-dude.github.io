@@ -89,9 +89,40 @@ const backlinks = currentSlug ? allPosts
     <!-- Quick Switcher Modal (Ctrl+K) -->
     <QuickSwitcher posts={allPosts} />
 
-    <!-- Obsidian Callout & Wikilink DOM Transformer -->
+    <!-- Obsidian Callout & Wikilink DOM Transformer + Drawer Controls -->
     <script is:inline>
       (function() {
+        // Setup drawer toggles reliably after DOM is ready
+        function setupToggles() {
+          const toggleVaultBtn = document.getElementById('toggle-vault-btn');
+          const vaultSidebar = document.getElementById('vault-sidebar');
+          if (toggleVaultBtn && vaultSidebar) {
+            toggleVaultBtn.addEventListener('click', (e) => {
+              e.stopPropagation();
+              vaultSidebar.classList.toggle('open');
+            });
+          }
+
+          const toggleOutlineBtn = document.getElementById('toggle-outline-btn');
+          const outlineSidebar = document.getElementById('outline-sidebar');
+          if (toggleOutlineBtn && outlineSidebar) {
+            toggleOutlineBtn.addEventListener('click', (e) => {
+              e.stopPropagation();
+              outlineSidebar.classList.toggle('open');
+            });
+          }
+
+          // Close on clicking outside on reading pane
+          document.addEventListener('click', (e) => {
+            if (vaultSidebar && vaultSidebar.classList.contains('open') && !vaultSidebar.contains(e.target) && e.target !== toggleVaultBtn && !toggleVaultBtn?.contains(e.target)) {
+              vaultSidebar.classList.remove('open');
+            }
+            if (outlineSidebar && outlineSidebar.classList.contains('open') && !outlineSidebar.contains(e.target) && e.target !== toggleOutlineBtn && !toggleOutlineBtn?.contains(e.target)) {
+              outlineSidebar.classList.remove('open');
+            }
+          });
+        }
+
         const ICONS = {
           note: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
             '<path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>' +
@@ -203,6 +234,7 @@ const backlinks = currentSlug ? allPosts
           });
         }
 
+        setupToggles();
         transformCallouts();
         transformWikilinks();
       })();
