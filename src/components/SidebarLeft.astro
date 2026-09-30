@@ -22,17 +22,17 @@ const statusIcons = {
 <aside class="vault-sidebar" id="vault-sidebar">
   <div class="vault-header">
     <div class="vault-info">
-      <span class="vault-label">VAULT EXPLORER</span>
+      <span class="vault-label">NOTES EXPLORER</span>
       <span class="vault-count">{posts.length} note{posts.length > 1 ? 's' : ''}</span>
     </div>
-    <button id="close-left-sidebar" class="close-sidebar-btn" title="Close Explorer">
+    <button id="close-left-sidebar" class="close-sidebar-btn" title="Close Notes">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
     </button>
   </div>
 
   <div class="vault-search-box">
     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-    <input type="text" id="vault-filter-input" placeholder="Filter files..." aria-label="Filter notes in vault" />
+    <input type="text" id="vault-filter-input" placeholder="Filter notes..." aria-label="Filter notes in vault" />
   </div>
 
   <nav class="vault-nav">
@@ -49,17 +49,17 @@ const statusIcons = {
             <span class="folder-badge">{categoryPosts.length}</span>
           </summary>
 
-          <ul class="file-list">
+          <ul class="note-list">
             {categoryPosts.map(post => {
               const isActive = currentSlug === post.id;
               const status = post.data.status || 'seedling';
               return (
-                <li class="file-item" data-title={post.data.title.toLowerCase()}>
-                  <a href={`/posts/${post.id}`} class:list={['file-link', { active: isActive }]}>
+                <li class="note-item" data-title={post.data.title.toLowerCase()}>
+                  <a href={`/posts/${post.id}`} class:list={['note-link', { active: isActive }]}>
                     <span class="status-indicator" title={`Status: ${status}`}>
                       {statusIcons[status] || '📄'}
                     </span>
-                    <span class="file-title">{post.data.title}</span>
+                    <span class="note-title">{post.data.title}</span>
                   </a>
                 </li>
               );
@@ -69,16 +69,6 @@ const statusIcons = {
       );
     })}
   </nav>
-
-  <div class="vault-footer">
-    <div class="author-card">
-      <div class="author-avatar">RL</div>
-      <div class="author-details">
-        <span class="author-name">Robotics Lab Notes</span>
-        <span class="author-role">Personal Engineering Journal</span>
-      </div>
-    </div>
-  </div>
 </aside>
 
 <style>
@@ -227,13 +217,13 @@ const statusIcons = {
     color: var(--text-faint);
   }
 
-  .file-list {
+  .note-list {
     list-style: none;
     padding-left: 1.1rem;
     margin: 0.15rem 0 0.4rem 0;
   }
 
-  .file-link {
+  .note-link {
     display: flex;
     align-items: center;
     gap: 0.45rem;
@@ -247,13 +237,13 @@ const statusIcons = {
     border-left: none; /* Clean: NO BORDER-LEFT */
   }
 
-  .file-link:hover {
+  .note-link:hover {
     background: var(--bg-surface-hover);
     color: var(--text-heading);
     text-decoration: none;
   }
 
-  .file-link.active {
+  .note-link.active {
     background: var(--bg-surface-active);
     color: var(--text-accent);
     font-weight: 600;
@@ -265,61 +255,20 @@ const statusIcons = {
     line-height: 1;
   }
 
-  .file-title {
+  .note-title {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-
-  .vault-footer {
-    padding: 0.75rem 1rem;
-    border-top: 1px solid var(--border-subtle);
-    background: var(--bg-sidebar);
-  }
-
-  .author-card {
-    display: flex;
-    align-items: center;
-    gap: 0.65rem;
-  }
-
-  .author-avatar {
-    width: 30px;
-    height: 30px;
-    background: linear-gradient(135deg, #7c3aed, #4f46e5);
-    color: #ffffff;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.72rem;
-    font-weight: 700;
-  }
-
-  .author-details {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .author-name {
-    font-size: 0.82rem;
-    font-weight: 600;
-    color: var(--text-heading);
-  }
-
-  .author-role {
-    font-size: 0.7rem;
-    color: var(--text-faint);
-  }
 </style>
 
 <script is:inline>
-  // Vault file filtering
+  // Note filtering
   const filterInput = document.getElementById('vault-filter-input');
   if (filterInput) {
     filterInput.addEventListener('input', (e) => {
       const q = e.target.value.toLowerCase().trim();
-      document.querySelectorAll('.file-item').forEach(item => {
+      document.querySelectorAll('.note-item').forEach(item => {
         const title = item.getAttribute('data-title') || '';
         if (!q || title.includes(q)) {
           item.style.display = '';

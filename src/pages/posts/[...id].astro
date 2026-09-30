@@ -61,11 +61,11 @@ const formattedUpdated = post.data.updatedDate?.toLocaleDateString('en-US', {
     <!-- Obsidian Note Header -->
     <header class="post-header">
       <div class="post-breadcrumb">
-        <a href="/">Vault</a>
+        <a href="/">Notes</a>
         <span class="sep">/</span>
         <span class="folder-name">{post.data.category || 'My Days at Robotics Lab'}</span>
         <span class="sep">/</span>
-        <span class="active-file">{post.id}.md</span>
+        <span class="active-note">{post.data.title}</span>
       </div>
 
       <h1 class="post-title">{post.data.title}</h1>
@@ -162,10 +162,13 @@ const formattedUpdated = post.data.updatedDate?.toLocaleDateString('en-US', {
     opacity: 0.4;
   }
 
-  .active-file {
+  .active-note {
     color: var(--text-accent);
-    font-family: var(--font-mono);
     font-size: 0.85em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 320px;
   }
 
   .post-title {
