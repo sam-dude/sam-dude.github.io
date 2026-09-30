@@ -4,8 +4,8 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  // Direct User Site: https://sam-dude.github.io
-  site: 'https://sam-dude.github.io',
+  // Production Site on Vercel
+  site: 'https://sam-dudegithubio.vercel.app',
   base: '/',
   integrations: [
     sitemap({

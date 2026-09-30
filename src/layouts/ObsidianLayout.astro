@@ -67,6 +67,46 @@ const backlinks = currentSlug ? allPosts
       tags={tags} 
       type={type} 
     />
+
+    <!-- Preload Primary Excalifont WOFF2 font for instant availability -->
+    <link 
+      rel="preload" 
+      href="/fonts/Virgil/Virgil-Regular.woff2" 
+      as="font" 
+      type="font/woff2" 
+      crossorigin="anonymous" 
+    />
+
+    <!-- Preconnect to Google Fonts for alternative typography options -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+    <link 
+      rel="stylesheet" 
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&display=swap" 
+    />
+
+    <!-- Critical Head Script: Theme & Font init before first paint + FOUT elimination -->
+    <script is:inline>
+      (function() {
+        try {
+          const savedTheme = localStorage.getItem('excaliblog-theme') || 'dark';
+          document.documentElement.setAttribute('data-theme', savedTheme);
+          const savedFont = localStorage.getItem('excaliblog-font') || 'excalifont';
+          document.documentElement.setAttribute('data-font', savedFont);
+        } catch (e) {}
+
+        if ('fonts' in document) {
+          document.documentElement.classList.add('fonts-loading');
+          document.fonts.ready.then(function() {
+            document.documentElement.classList.remove('fonts-loading');
+          });
+          // Fallback timer: ensure content displays even on slow connections
+          setTimeout(function() {
+            document.documentElement.classList.remove('fonts-loading');
+          }, 350);
+        }
+      })();
+    </script>
   </head>
   <body>
     <!-- Top Obsidian Header -->
