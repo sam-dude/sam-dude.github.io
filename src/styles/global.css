@@ -2,16 +2,13 @@
    Sam-Dude's Vault - Obsidian Style Digital Garden
    ========================================================================== */
 
-/* Google Fonts for Alternative Switcher options */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&display=swap');
-
-/* Excalifont / Virgil Hand-Drawn Font */
+/* Excalifont / Virgil Hand-Drawn Font (Loaded locally with block display to prevent FOUT) */
 @font-face {
   font-family: 'Excalifont';
   src: url('/fonts/Virgil/Virgil-Regular.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
-  font-display: swap;
+  font-display: block;
 }
 
 @font-face {
@@ -19,7 +16,7 @@
   src: url('/fonts/Virgil/Virgil-Regular.woff2') format('woff2');
   font-weight: bold;
   font-style: normal;
-  font-display: swap;
+  font-display: block;
 }
 
 :root {
@@ -155,6 +152,11 @@ html {
   background-color: var(--bg-app);
 }
 
+/* Prevent FOUT / font popping before fonts are ready */
+html.fonts-loading body {
+  opacity: 0;
+}
+
 body {
   min-height: 100vh;
   display: flex;
@@ -164,6 +166,7 @@ body {
   color: inherit;
   background-color: inherit;
   -webkit-font-smoothing: antialiased;
+  transition: opacity 0.12s ease-in;
 }
 
 a {
