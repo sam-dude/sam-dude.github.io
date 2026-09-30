@@ -8,7 +8,7 @@ export async function GET(context: { site: URL }) {
   return rss({
     title: "Sam-Dude's Vault | Robotics & Tech Journal",
     description: "Reflective engineering reports, robotics field notes, and technical reflections by Samuel.",
-    site: context.site || 'https://excaliblog.github.io',
+    site: context.site || 'https://sam-dude.github.io',
     items: sortedPosts.map(post => ({
       title: post.data.title,
       pubDate: post.data.pubDate,

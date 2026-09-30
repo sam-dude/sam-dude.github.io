@@ -4,9 +4,9 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  // Configure for GitHub Pages or custom domain
-  site: 'https://excaliblog.github.io',
-  base: process.env.BASE_PATH || '/',
+  // Direct User Site: https://sam-dude.github.io
+  site: 'https://sam-dude.github.io',
+  base: '/',
   integrations: [
     sitemap({
       filter: (page) => !page.includes('/404'),

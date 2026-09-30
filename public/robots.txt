@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://excaliblog.github.io/sitemap-index.xml
+Sitemap: https://sam-dude.github.io/sitemap-index.xml
